@@ -1,0 +1,6 @@
+/target/
+.classpath
+.project
+.settings
+src/test/resources/testWaveFiles
+src/test/resources/testAudiowaveformFiles
