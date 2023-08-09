@@ -73,6 +73,10 @@ public class Options {
     return framesPerSecond;
   }
 
+  public int getNumThreads() {
+    return numThreads;
+  }
+
   private final int numInputChannels;
   private final byte[] audioBytes;
   private final long numFrames;
@@ -85,7 +89,7 @@ public class Options {
   private final int pixelSizeInBytes;
   private final int
       frameSizeInBytes; // Frame = 1 sample from each channel (PCM). Frame Size = Sample size *
-                        // Channels
+  // Channels
   private final int sampleSizeInBytes;
   private final int numPixels;
   private final int samplesPerPixel;
@@ -94,6 +98,8 @@ public class Options {
   // each channel
   private final float samplesPerSecond; // Sample Rate = # of samples / second
   private final float framesPerSecond; // Frame Rate = # of frames / second
+
+  private final int numThreads;
 
   public Options(WaveformBuilder builder) throws UnsupportedAudioFileException, IOException {
     try (AudioInputStream audioInputStream =
@@ -112,8 +118,8 @@ public class Options {
                   (numFrames
                       * numInputChannels
                       * sampleSizeInBytes)]; // Number of bytes needed equals number of frames times
-                                             // number of channels (per frame) times number of bytes
-                                             // (per channel)
+      // number of channels (per frame) times number of bytes
+      // (per channel)
       audioInputStream.read(audioBytes);
       audioInputStream.close();
     } finally {
@@ -131,6 +137,7 @@ public class Options {
     this.numPixels = (int) Math.ceil((double) numFrames / framesPerPixel);
     this.numSamples = numFrames * numInputChannels;
     this.pixelSizeInBytes = frameSizeInBytes * framesPerPixel;
+    this.numThreads = Runtime.getRuntime().availableProcessors();
     // System.out.println(toString());
   }
 
@@ -177,6 +184,8 @@ public class Options {
         .append(samplesPerSecond)
         .append("\nframesPerSecond = ")
         .append(framesPerSecond)
+        .append("\nnumThreads = ")
+        .append(numThreads)
         .toString();
   }
 }

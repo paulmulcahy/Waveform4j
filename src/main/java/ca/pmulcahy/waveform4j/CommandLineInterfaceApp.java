@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import picocli.CommandLine;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
@@ -26,10 +27,14 @@ public class CommandLineInterfaceApp implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception {
-    WaveformBuilder builder = Waveform4j.builder().build().newWaveformBuilder();
+    int numThreads = Runtime.getRuntime().availableProcessors();
+    WaveformBuilder builder =
+        Waveform4j.builder()
+            .setExecutorService(Executors.newFixedThreadPool(numThreads))
+            .build()
+            .newWaveformBuilder();
     builder.setInput(inputOutput.inputFilePath);
     builder.setPixelsPerSecond(zoomLevelPixelsPerSecond);
-    // }
     String waveformJson = builder.buildJson();
 
     Files.writeString(
