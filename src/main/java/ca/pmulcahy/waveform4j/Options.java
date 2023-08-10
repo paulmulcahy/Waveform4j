@@ -3,6 +3,7 @@ package ca.pmulcahy.waveform4j;
 import ca.pmulcahy.waveform4j.enums.Codec;
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -77,6 +78,10 @@ public class Options {
     return numThreads;
   }
 
+  public Encoding getEncoding() {
+    return encoding;
+  }
+
   private final int numInputChannels;
   private final byte[] audioBytes;
   private final long numFrames;
@@ -100,6 +105,7 @@ public class Options {
   private final float framesPerSecond; // Frame Rate = # of frames / second
 
   private final int numThreads;
+  private Encoding encoding;
 
   public Options(WaveformBuilder builder) throws UnsupportedAudioFileException, IOException {
     try (AudioInputStream audioInputStream =
@@ -112,6 +118,7 @@ public class Options {
       numFrames = audioInputStream.getFrameLength();
       frameSizeInBytes = audioFormat.getFrameSize();
       sampleSizeInBytes = audioFormat.getSampleSizeInBits() / 8;
+      encoding = audioFormat.getEncoding();
       audioBytes =
           new byte
               [(int)
@@ -138,6 +145,7 @@ public class Options {
     this.numSamples = numFrames * numInputChannels;
     this.pixelSizeInBytes = frameSizeInBytes * framesPerPixel;
     this.numThreads = builder.getNumThreads() > 0 ? builder.getNumThreads() : 1;
+
     // System.out.println(toString());
   }
 

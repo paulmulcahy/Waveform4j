@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import javax.sound.sampled.AudioFormat;
 
 public class Concurrency {
 
@@ -18,13 +19,27 @@ public class Concurrency {
 
     List<Callable<int[]>> tasks = new ArrayList<>();
 
-    for (int i = 0; i < options.getNumThreads(); i++) {
-      int inclusiveStartPixel = i * minPixelsPerThread + Math.min(i, numThreadsWithBonusPixel);
-      int exclusiveEndPixel =
-          1 + (i + 1) * minPixelsPerThread + Math.min((i + 1), numThreadsWithBonusPixel) - 1;
-      tasks.add(
-          () ->
-              WaveformGeneration.generateWaveform(options, inclusiveStartPixel, exclusiveEndPixel));
+    if (AudioFormat.Encoding.PCM_SIGNED.equals(options.getEncoding())
+        || AudioFormat.Encoding.PCM_UNSIGNED.equals(options.getEncoding())) {
+      for (int i = 0; i < options.getNumThreads(); i++) {
+        int inclusiveStartPixel = i * minPixelsPerThread + Math.min(i, numThreadsWithBonusPixel);
+        int exclusiveEndPixel =
+            1 + (i + 1) * minPixelsPerThread + Math.min((i + 1), numThreadsWithBonusPixel) - 1;
+        tasks.add(
+            () ->
+                WaveformGeneration.generateWaveform(
+                    options, inclusiveStartPixel, exclusiveEndPixel));
+      }
+    } else {
+      for (int i = 0; i < options.getNumThreads(); i++) {
+        int inclusiveStartPixel = i * minPixelsPerThread + Math.min(i, numThreadsWithBonusPixel);
+        int exclusiveEndPixel =
+            1 + (i + 1) * minPixelsPerThread + Math.min((i + 1), numThreadsWithBonusPixel) - 1;
+        tasks.add(
+            () ->
+                WaveformGenerationFloatingPoint.generateWaveform(
+                    options, inclusiveStartPixel, exclusiveEndPixel));
+      }
     }
 
     try {

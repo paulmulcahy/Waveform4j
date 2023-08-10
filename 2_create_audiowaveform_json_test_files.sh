@@ -35,18 +35,14 @@ audiowaveform -i testWaveFiles/copyAudio/stereo_32bit.wav -o testAudiowaveformFi
 audiowaveform -i testWaveFiles/copyAudio/stereo_32bit.wav -o testAudiowaveformFiles/copyAudio/stereo_32bit_pps100_bits16.json --pixels-per-second 100 --split-channels
 audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bit.wav -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bit_pps100_bits8.json --bits 8 --pixels-per-second 100 --split-channels
 audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bit.wav -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bit_pps100_bits16.json --pixels-per-second 100 --split-channels
-audiowaveform -i testWaveFiles/copyAudio/stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits8.json --bits 8
-audiowaveform -i testWaveFiles/copyAudio/stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits16.json
-audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits8.json --bits 8
-audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits16.json
-audiowaveform -i testWaveFiles/copyAudio/stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits8.json --bits 8
-audiowaveform -i testWaveFiles/copyAudio/stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits16.json
-audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav  -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits8.json --bits 8
-audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav  -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits16.json
-audiowaveform -i testWaveFiles/copyAudio/stereo_64bitfloat.wav  -o testAudiowaveformFiles/copyAudio/stereo_64bitfloat_pps100_bits8.json --bits 8
-audiowaveform -i testWaveFiles/copyAudio/stereo_64bitfloat.wav  -o testAudiowaveformFiles/copyAudio/stereo_64bitfloat_pps100_bits16.json
-audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_64bitfloat.wav   -o testAudiowaveformFiles/copyAudio/waveextensible_stereo__pps100_bits8.json --bits 8
-audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_64bitfloat.wav   -o testAudiowaveformFiles/copyAudio/waveextensible_stereo__pps100_bits16.json
+audiowaveform -i testWaveFiles/copyAudio/stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits8.json --bits 8 --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits16.json --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits8.json --bits 8 --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits16.json --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/stereo_64bitfloat.wav  -o testAudiowaveformFiles/copyAudio/stereo_64bitfloat_pps100_bits8.json --bits 8 --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/stereo_64bitfloat.wav  -o testAudiowaveformFiles/copyAudio/stereo_64bitfloat_pps100_bits16.json --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_64bitfloat.wav   -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_64bitfloat_pps100_bits8.json --bits 8 --pixels-per-second 100 --split-channels
+audiowaveform -i testWaveFiles/copyAudio/waveextensible_stereo_64bitfloat.wav   -o testAudiowaveformFiles/copyAudio/waveextensible_stereo_64bitfloat_pps100_bits16.json --pixels-per-second 100 --split-channels
 
 #GoldWave
 mkdir -p testAudiowaveformFiles/goldwave

@@ -165,4 +165,80 @@ public class WaveformBuilderTest {
 
     Assertions.assertEquals(expectedString, actualString);
   }
+
+  @Test
+  public void concurrentStereoFloatingPoint32BitPixelsPerSecond100Bits8()
+      throws IOException, UnsupportedAudioFileException {
+    Path inputWav = Paths.get("src/test/resources/testWaveFiles/copyAudio/stereo_32bitfloat.wav");
+    Path expectedJson =
+        Paths.get(
+            "src/test/resources/testAudiowaveformFiles/copyAudio/stereo_32bitfloat_pps100_bits8.json");
+    String expectedString = Files.readAllLines(expectedJson).get(0);
+
+    WaveformBuilder builder = concurrentWaveform4j.newWaveformBuilder();
+    builder.setInput(inputWav);
+    builder.setPixelsPerSecond(100);
+    builder.setNumThreads(4);
+    String actualString = builder.buildJson();
+
+    Assertions.assertEquals(expectedString, actualString);
+  }
+
+  @Test
+  public void concurrentExtensibleStereoFloatingPoint32BitPixelsPerSecond100Bits8()
+      throws IOException, UnsupportedAudioFileException {
+    Path inputWav =
+        Paths.get(
+            "src/test/resources/testWaveFiles/copyAudio/waveextensible_stereo_32bitfloat.wav");
+    Path expectedJson =
+        Paths.get(
+            "src/test/resources/testAudiowaveformFiles/copyAudio/waveextensible_stereo_32bitfloat_pps100_bits8.json");
+    String expectedString = Files.readAllLines(expectedJson).get(0);
+
+    WaveformBuilder builder = concurrentWaveform4j.newWaveformBuilder();
+    builder.setInput(inputWav);
+    builder.setPixelsPerSecond(100);
+    builder.setNumThreads(4);
+    String actualString = builder.buildJson();
+
+    Assertions.assertEquals(expectedString, actualString);
+  }
+
+  @Test
+  public void concurrentStereoFloatingPoint64BitPixelsPerSecond100Bits8()
+      throws IOException, UnsupportedAudioFileException {
+    Path inputWav = Paths.get("src/test/resources/testWaveFiles/copyAudio/stereo_64bitfloat.wav");
+    Path expectedJson =
+        Paths.get(
+            "src/test/resources/testAudiowaveformFiles/copyAudio/stereo_64bitfloat_pps100_bits8.json");
+    String expectedString = Files.readAllLines(expectedJson).get(0);
+
+    WaveformBuilder builder = concurrentWaveform4j.newWaveformBuilder();
+    builder.setInput(inputWav);
+    builder.setPixelsPerSecond(100);
+    builder.setNumThreads(4);
+    String actualString = builder.buildJson();
+
+    Assertions.assertEquals(expectedString, actualString);
+  }
+
+  @Test
+  public void concurrentExtensibleStereoFloatingPoint64BitPixelsPerSecond100Bits8()
+      throws IOException, UnsupportedAudioFileException {
+    Path inputWav =
+        Paths.get(
+            "src/test/resources/testWaveFiles/copyAudio/waveextensible_stereo_64bitfloat.wav");
+    Path expectedJson =
+        Paths.get(
+            "src/test/resources/testAudiowaveformFiles/copyAudio/waveextensible_stereo_64bitfloat_pps100_bits8.json");
+    String expectedString = Files.readAllLines(expectedJson).get(0);
+
+    WaveformBuilder builder = concurrentWaveform4j.newWaveformBuilder();
+    builder.setInput(inputWav);
+    builder.setPixelsPerSecond(100);
+    builder.setNumThreads(4);
+    String actualString = builder.buildJson();
+
+    Assertions.assertEquals(expectedString, actualString);
+  }
 }
