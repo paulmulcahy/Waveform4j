@@ -1,5 +1,6 @@
 package ca.pmulcahy.waveform4j;
 
+import ca.pmulcahy.waveform4j.enums.Codec;
 
 public class WaveformGeneration {
 
@@ -27,6 +28,11 @@ public class WaveformGeneration {
             minAndMaxValuesForChannelsInPixel, frameAudioSamples, options);
       }
       addPixel(pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter - inclusiveStartPixel);
+      adjustPixel(
+          pixelData,
+          minAndMaxValuesForChannelsInPixel.length,
+          pixelCounter - inclusiveStartPixel,
+          options.getCodec());
     }
 
     return pixelData;
@@ -39,8 +45,36 @@ public class WaveformGeneration {
         inputChannelCounter++) {
       int currentSampleByte =
           currentFrameByte + inputChannelCounter * options.getSampleSizeInBytes();
-      frameAudioSamples[inputChannelCounter] =
-          BitConverter.unsignedByteToSignedInt(options.getAudioBytes()[currentSampleByte]);
+
+      switch (options.getCodec()) {
+        case PCM_U8:
+          frameAudioSamples[inputChannelCounter] =
+              BitConverter.unsignedByteToSignedInt(options.getAudioBytes()[currentSampleByte]);
+          break;
+        case PCM_S16LE:
+          frameAudioSamples[inputChannelCounter] =
+              BitConverter.signedTwoLittleEndianBytesToInt(
+                  options.getAudioBytes()[currentSampleByte],
+                  options.getAudioBytes()[currentSampleByte + 1]);
+          break;
+        case PCM_S24LE:
+          frameAudioSamples[inputChannelCounter] =
+              BitConverter.signedThreeLittleEndianBytesToInt(
+                  options.getAudioBytes()[currentSampleByte],
+                  options.getAudioBytes()[currentSampleByte + 1],
+                  options.getAudioBytes()[currentSampleByte + 2]);
+          break;
+        case PCM_S32LE:
+          frameAudioSamples[inputChannelCounter] =
+              BitConverter.signedFourLittleEndianBytesToInt(
+                  options.getAudioBytes()[currentSampleByte],
+                  options.getAudioBytes()[currentSampleByte + 1],
+                  options.getAudioBytes()[currentSampleByte + 2],
+                  options.getAudioBytes()[currentSampleByte + 3]);
+          break;
+        default:
+          throw new RuntimeException("Codec not implemented!");
+      }
     }
   }
 
@@ -49,6 +83,37 @@ public class WaveformGeneration {
     int numChannelsTimesTwo = minAndMaxValuesForChannelsInPixel.length;
     for (int i = 0; i < numChannelsTimesTwo; i++) {
       pixelData[pixelNum * numChannelsTimesTwo + i] = minAndMaxValuesForChannelsInPixel[i];
+    }
+  }
+
+  private static void adjustPixel(
+      int[] pixelData, int numChannelsTimesTwo, int pixelNum, Codec codec) {
+    switch (codec) {
+      case PCM_U8:
+        break;
+      case PCM_S16LE:
+        for (int i = 0; i < numChannelsTimesTwo; i++) {
+          int sixteenBit = pixelData[pixelNum * numChannelsTimesTwo + i];
+          int eightBit = sixteenBit / 256;
+          pixelData[pixelNum * numChannelsTimesTwo + i] = eightBit;
+        }
+        break;
+      case PCM_S24LE:
+        for (int i = 0; i < numChannelsTimesTwo; i++) {
+          int twentyFourBit = pixelData[pixelNum * numChannelsTimesTwo + i];
+          int eightBit = twentyFourBit / 65536;
+          pixelData[pixelNum * numChannelsTimesTwo + i] = eightBit;
+        }
+        break;
+      case PCM_S32LE:
+        for (int i = 0; i < numChannelsTimesTwo; i++) {
+          int twentyFourBit = pixelData[pixelNum * numChannelsTimesTwo + i];
+          int eightBit = twentyFourBit / 16777216;
+          pixelData[pixelNum * numChannelsTimesTwo + i] = eightBit;
+        }
+        break;
+      default:
+        throw new RuntimeException("Codec not implemented!");
     }
   }
 

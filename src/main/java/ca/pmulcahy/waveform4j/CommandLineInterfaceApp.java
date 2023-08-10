@@ -35,6 +35,7 @@ public class CommandLineInterfaceApp implements Callable<Integer> {
             .newWaveformBuilder();
     builder.setInput(inputOutput.inputFilePath);
     builder.setPixelsPerSecond(zoomLevelPixelsPerSecond);
+    builder.setNumThreads(numThreads);
     String waveformJson = builder.buildJson();
 
     Files.writeString(

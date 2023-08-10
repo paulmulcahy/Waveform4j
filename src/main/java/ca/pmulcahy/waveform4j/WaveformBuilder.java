@@ -18,6 +18,8 @@ public class WaveformBuilder {
 
   private Path inputFilePath;
 
+  private int numThreads;
+
   // TODO: there is a bug when AudioInputStream is created from an InputStream
   // TODO: overload setInput to accept byte array, use audioinputstream to find delta to first
   // frame, and make WaveformGenerator use delta
@@ -54,6 +56,15 @@ public class WaveformBuilder {
 
   public Path getInputFilePath() {
     return inputFilePath;
+  }
+
+  public WaveformBuilder setNumThreads(int numThreads) {
+    this.numThreads = numThreads;
+    return this;
+  }
+
+  public int getNumThreads() {
+    return numThreads;
   }
 
   public Waveform build() throws UnsupportedAudioFileException, IOException {

@@ -137,7 +137,7 @@ public class Options {
     this.numPixels = (int) Math.ceil((double) numFrames / framesPerPixel);
     this.numSamples = numFrames * numInputChannels;
     this.pixelSizeInBytes = frameSizeInBytes * framesPerPixel;
-    this.numThreads = Runtime.getRuntime().availableProcessors();
+    this.numThreads = builder.getNumThreads() > 0 ? builder.getNumThreads() : 1;
     // System.out.println(toString());
   }
 
@@ -147,7 +147,27 @@ public class Options {
       return Codec.PCM_U8;
     }
 
-    // TODO: Add other Codecs
+    if (!audioFormat.isBigEndian()) {
+      if (AudioFormat.Encoding.PCM_SIGNED.equals(audioFormat.getEncoding())) {
+        if (audioFormat.getSampleSizeInBits() == 16) {
+          return Codec.PCM_S16LE;
+        }
+        if (audioFormat.getSampleSizeInBits() == 24) {
+          return Codec.PCM_S24LE;
+        }
+        if (audioFormat.getSampleSizeInBits() == 32) {
+          return Codec.PCM_S32LE;
+        }
+      }
+      if (AudioFormat.Encoding.PCM_FLOAT.equals(audioFormat.getEncoding())) {
+        if (audioFormat.getSampleSizeInBits() == 32) {
+          return Codec.PCM_F32LE;
+        }
+        if (audioFormat.getSampleSizeInBits() == 64) {
+          return Codec.PCM_F64LE;
+        }
+      }
+    }
 
     throw new RuntimeException("Codec Not Supported");
   }
