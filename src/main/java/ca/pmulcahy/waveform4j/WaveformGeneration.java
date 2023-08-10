@@ -1,56 +1,16 @@
 package ca.pmulcahy.waveform4j;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 public class WaveformGeneration {
 
-  public static int[] generateWaveform(Options options) {
-    ExecutorService executorService = options.getWaveform4j().getExecutorService();
-
-    int minPixelsPerThread = options.getNumPixels() / options.getNumThreads();
-    int numThreadsWithBonusPixel = options.getNumPixels() % options.getNumThreads();
-
-    List<Callable<int[]>> tasks = new ArrayList<>();
-
-    for (int i = 0; i < options.getNumThreads(); i++) {
-      int inclusiveStartPixel = i * minPixelsPerThread + Math.min(i + 1, numThreadsWithBonusPixel);
-      int exclusiveEndPixel =
-          (i + 1) * minPixelsPerThread + Math.min((i + 1) + 1, numThreadsWithBonusPixel) - 1;
-      tasks.add(() -> generateWaveform(options, inclusiveStartPixel, exclusiveEndPixel));
-    }
-
-    try {
-      List<Future<int[]>> futureResults = executorService.invokeAll(tasks);
-      futureResults.stream()
-          .flatMapToInt(
-              future -> {
-                try {
-                  return Arrays.stream(future.get());
-                } catch (InterruptedException | ExecutionException exception) {
-                  throw new RuntimeException(exception);
-                }
-              })
-          .toArray();
-    } catch (InterruptedException e) {
-      System.out.println(e);
-    }
-
-    return generateWaveform(options, 0, options.getNumPixels());
-  }
-
   public static int[] generateWaveform(
       Options options, int inclusiveStartPixel, int exclusiveEndPixel) {
-    int[] pixelData = new int[options.getNumPixels() * 2 * options.getNumOutputChannels()];
+    int[] pixelData =
+        new int[(exclusiveEndPixel - inclusiveStartPixel) * 2 * options.getNumOutputChannels()];
     int[] frameAudioSamples = new int[options.getNumInputChannels()];
     int[] minAndMaxValuesForChannelsInPixel = new int[2 * options.getNumInputChannels()];
 
-    for (int pixelCounter = 0; pixelCounter < options.getNumPixels(); pixelCounter++) {
+    for (int pixelCounter = inclusiveStartPixel; pixelCounter < exclusiveEndPixel; pixelCounter++) {
       int currentPixelByte = pixelCounter * options.getPixelSizeInBytes();
 
       for (int j = 0; j < minAndMaxValuesForChannelsInPixel.length; j++) {
@@ -66,7 +26,7 @@ public class WaveformGeneration {
         updateMinAndMaxValuesForChannelsInPixel(
             minAndMaxValuesForChannelsInPixel, frameAudioSamples, options);
       }
-      addPixel(pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter);
+      addPixel(pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter - inclusiveStartPixel);
     }
 
     return pixelData;

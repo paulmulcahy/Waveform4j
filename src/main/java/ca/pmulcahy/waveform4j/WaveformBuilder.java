@@ -61,7 +61,7 @@ public class WaveformBuilder {
     Waveform waveform = new Waveform();
     waveform.setBits(8);
     waveform.setChannels(options.getNumInputChannels());
-    waveform.setData(WaveformGeneration.generateWaveform(options));
+    waveform.setData(Concurrency.generateWaveform(options));
     waveform.setLength(options.getNumPixels());
     waveform.setSampleRate(options.getSamplesPerSecond());
     waveform.setSamplesPerPixel(options.getSamplesPerPixel());
