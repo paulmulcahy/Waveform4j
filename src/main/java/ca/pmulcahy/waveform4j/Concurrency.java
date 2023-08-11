@@ -12,6 +12,17 @@ import javax.sound.sampled.AudioFormat;
 public class Concurrency {
 
   public static int[] generateWaveform(Options options) {
+    if (options.getNumThreads() > 1) {
+      return parallelGenerateWaveform(options);
+    }
+    return serialGenerateWaveform(options);
+  }
+
+  public static int[] serialGenerateWaveform(Options options) {
+    return WaveformGeneration.generateWaveform(options, 0, options.getNumPixels());
+  }
+
+  public static int[] parallelGenerateWaveform(Options options) {
     ExecutorService executorService = options.getWaveform4j().getExecutorService();
 
     int minPixelsPerThread = options.getNumPixels() / options.getNumThreads();

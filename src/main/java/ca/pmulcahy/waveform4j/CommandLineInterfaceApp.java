@@ -27,7 +27,7 @@ public class CommandLineInterfaceApp implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception {
-    int numThreads = Runtime.getRuntime().availableProcessors();
+    // int numThreads = Runtime.getRuntime().availableProcessors();
     WaveformBuilder builder =
         Waveform4j.builder()
             .setExecutorService(Executors.newFixedThreadPool(numThreads))
@@ -62,6 +62,12 @@ public class CommandLineInterfaceApp implements Callable<Integer> {
       defaultValue = "100",
       description = "zoom level (pixels per second)")
   private int zoomLevelPixelsPerSecond;
+
+  @Option(
+      names = {"-t", "--threads"},
+      defaultValue = "1",
+      description = "number of threads")
+  private int numThreads;
 
   static class InputOutput {
 
