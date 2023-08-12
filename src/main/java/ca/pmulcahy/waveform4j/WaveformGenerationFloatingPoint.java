@@ -1,12 +1,10 @@
 package ca.pmulcahy.waveform4j;
 
-
 public class WaveformGenerationFloatingPoint {
 
   public static int[] generateWaveform(
-      Options options, int inclusiveStartPixel, int exclusiveEndPixel) {
-    int[] pixelData =
-        new int[(exclusiveEndPixel - inclusiveStartPixel) * 2 * options.getNumOutputChannels()];
+      int[] pixelData, Options options, int inclusiveStartPixel, int exclusiveEndPixel) {
+
     double[] frameAudioSamples = new double[options.getNumInputChannels()];
     double[] minAndMaxValuesForChannelsInPixel = new double[2 * options.getNumInputChannels()];
 
@@ -26,7 +24,8 @@ public class WaveformGenerationFloatingPoint {
         updateMinAndMaxValuesForChannelsInPixel(
             minAndMaxValuesForChannelsInPixel, frameAudioSamples, options);
       }
-      addPixel(pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter - inclusiveStartPixel);
+      addPixel(
+          pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter /* - inclusiveStartPixel*/);
     }
 
     return pixelData;

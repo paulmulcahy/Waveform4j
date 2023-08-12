@@ -5,9 +5,7 @@ import ca.pmulcahy.waveform4j.enums.Codec;
 public class WaveformGeneration {
 
   public static int[] generateWaveform(
-      Options options, int inclusiveStartPixel, int exclusiveEndPixel) {
-    int[] pixelData =
-        new int[(exclusiveEndPixel - inclusiveStartPixel) * 2 * options.getNumOutputChannels()];
+      int[] pixelData, Options options, int inclusiveStartPixel, int exclusiveEndPixel) {
     int[] frameAudioSamples = new int[options.getNumInputChannels()];
     int[] minAndMaxValuesForChannelsInPixel = new int[2 * options.getNumInputChannels()];
 
@@ -27,12 +25,9 @@ public class WaveformGeneration {
         updateMinAndMaxValuesForChannelsInPixel(
             minAndMaxValuesForChannelsInPixel, frameAudioSamples, options);
       }
-      addPixel(pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter - inclusiveStartPixel);
+      addPixel(pixelData, minAndMaxValuesForChannelsInPixel, pixelCounter);
       adjustPixel(
-          pixelData,
-          minAndMaxValuesForChannelsInPixel.length,
-          pixelCounter - inclusiveStartPixel,
-          options.getCodec());
+          pixelData, minAndMaxValuesForChannelsInPixel.length, pixelCounter, options.getCodec());
     }
 
     return pixelData;
